@@ -2,6 +2,7 @@ import dspy
 import pytest
 from monty_rlm import MontyCodeInterpreter, MontyRLM
 from utils.openrouter_utils import get_openrouter_lm
+from utils.tooling_utils import web_search
 
 
 @pytest.fixture
@@ -100,3 +101,18 @@ def test_rlm_multi_step():
         )
         result = rlm(reviews=reviews)
         assert "3" in result.positive_count
+
+
+def test_small_search():
+    """MontyRLM uses custom tools for search."""
+    user_query: str = "Find me 5 variations of carbonara and explain main differences and explanations of which is best"
+    lm = get_openrouter_lm(model="openrouter/minimax/minimax-m2.5")
+    sub_lm = get_openrouter_lm(model="openrouter/openai/gpt-4.1-nano")
+    with dspy.context(lm=lm):
+        rlm = MontyRLM(
+            "user_query -> search_output: str",
+            max_iterations=10,
+            sub_lm=sub_lm,
+            tools=[web_search],
+        )
+        result = rlm(user_query=user_query)
