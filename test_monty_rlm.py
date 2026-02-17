@@ -84,6 +84,7 @@ def test_rlm_multi_step_with_save():
 def test_rlm_multi_step():
     """MontyRLM uses llm_query for semantic analysis then aggregates in code."""
     lm = get_openrouter_lm(model="openrouter/minimax/minimax-m2.5")
+    sub_lm = get_openrouter_lm(model="openrouter/openai/gpt-4.1-nano")
     reviews = (
         "1. The pasta was absolutely amazing, best Italian food in the city!\n"
         "2. Terrible service, waited 45 minutes and the food was cold.\n"
@@ -95,7 +96,7 @@ def test_rlm_multi_step():
         rlm = MontyRLM(
             "reviews -> positive_count: str",
             max_iterations=10,
-            sub_lm=lm,
+            sub_lm=sub_lm,
         )
         result = rlm(reviews=reviews)
         assert "3" in result.positive_count
