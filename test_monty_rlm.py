@@ -95,6 +95,7 @@ def test_rlm_multi_step():
         rlm = MontyRLM(
             "reviews -> positive_count: str",
             max_iterations=10,
+            sub_lm=lm,
         )
         result = rlm(reviews=reviews)
         assert "3" in result.positive_count
