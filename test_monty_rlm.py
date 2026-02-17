@@ -1,7 +1,7 @@
 import dspy
 import pytest
-
 from monty_rlm import MontyCodeInterpreter, MontyRLM
+from utils.openrouter_utils import get_openrouter_lm
 
 
 @pytest.fixture
@@ -83,7 +83,7 @@ def test_rlm_multi_step_with_save():
 
 def test_rlm_multi_step():
     """MontyRLM uses llm_query for semantic analysis then aggregates in code."""
-    lm = dspy.LM("openai/gpt-4.1-nano")
+    lm = get_openrouter_lm(model="openrouter/minimax/minimax-m2.5")
     reviews = (
         "1. The pasta was absolutely amazing, best Italian food in the city!\n"
         "2. Terrible service, waited 45 minutes and the food was cold.\n"
