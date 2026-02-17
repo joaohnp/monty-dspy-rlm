@@ -14,6 +14,6 @@ def get_openrouter_lm(model):
         max_tokens=80000,
         cache=False,
         temperature=1.0,
-        extra_headers={"streaming": "True"},
+        extra_headers={"streaming": "False"},
     )
     return lm
